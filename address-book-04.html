@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Address Book App with Table</title>
+  <!-- ReactのCDNリンク -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <!-- BabelのCDNリンク -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Material-UIのCDNリンク -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <script src="https://unpkg.com/@material-ui/core@4.11.4/umd/material-ui.development.js"></script>
+  <!-- Material iconsのリンク -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+  // React Hooksを使用
+  const { useState } = React;
+  // Material-UIのテーブルコンポーネントをインポート
+  const {
+    TextField, Button, Container, Typography,
+    Table, TableBody, TableCell, TableHead, TableRow
+  } = window['MaterialUI'];
+
+  function AddressBookApp() {
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [entries, setEntries] = useState([]);
+
+    const handleNameChange = event => {
+      setName(event.target.value);
+    };
+
+    const handleAddressChange = event => {
+      setAddress(event.target.value);
+    };
+
+    const handleSubmit = event => {
+      event.preventDefault();
+      if (!name || !address) {
+        return;
+      }
+      setEntries([...entries, { name, address }]);
+      setName('');
+      setAddress('');
+    };
+
+    return (
+      <Container maxWidth="sm">
+        <Typography variant="h4" component="h1" gutterBottom>
+          Address Book
+        </Typography>
+        <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+          <TextField
+            label="Name"
+            value={name}
+            onChange={handleNameChange}
+            margin="normal"
+            fullWidth
+          />
+          <TextField
+            label="Address"
+            value={address}
+            onChange={handleAddressChange}
+            margin="normal"
+            fullWidth
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Add Entry
+          </Button>
+        </form>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Address</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {entries.map((entry, index) => (
+              <TableRow key={index}>
+                <TableCell>{entry.name}</TableCell>
+                <TableCell>{entry.address}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Container>
+    );
+  }
+
+  ReactDOM.render(<AddressBookApp />, document.getElementById('root'));
+</script>
+
+</body>
+</html>

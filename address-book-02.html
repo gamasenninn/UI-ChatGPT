@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styled Address Book App</title>
+<!-- ReactのCDNリンク -->
+<script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<!-- BabelのCDNリンク -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Material-UIのCDNリンク -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+
+// Material-UIのコンポーネントをインポート
+const { TextField, Button, List, ListItem, ListItemText, Container, Typography } = window['@material-ui/core'];
+
+function AddressBookApp() {
+  const [name, setName] = React.useState('');
+  const [address, setAddress] = React.useState('');
+  const [entries, setEntries] = React.useState([]);
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newEntry = { name, address };
+    setEntries([...entries, newEntry]);
+    setName('');
+    setAddress('');
+  };
+
+  return (
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Address Book
+      </Typography>
+      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+        <TextField
+          label="Name"
+          value={name}
+          onChange={handleNameChange}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="Address"
+          value={address}
+          onChange={handleAddressChange}
+          margin="normal"
+          fullWidth
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Add Entry
+        </Button>
+      </form>
+      <List>
+        {entries.map((entry, index) => (
+          <ListItem key={index}>
+            <ListItemText primary={entry.name} secondary={entry.address} />
+          </ListItem>
+        ))}
+      </List>
+    </Container>
+  );
+}
+
+ReactDOM.render(<AddressBookApp />, document.getElementById('root'));
+
+</script>
+</body>
+</html>
